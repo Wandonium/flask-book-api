@@ -26,9 +26,7 @@ def isValid(email):
     else:
       return False
 
-# time complexity is O(sqr(n)) coz of array to produce bks and
-# array to check if title in bks. This needs optimization
-# space complexity is O(1) coz of use of array of dictionaries
+
 @app.route("/request", methods=['POST'])
 def postRequest():
     req_data = request.get_json()
@@ -62,9 +60,7 @@ def postRequest():
                 'msg': 'Success creating a new book!👍😀'
             })
 
-# time complexity is O(sqr(n)) coz of array to produce bks and
-# array to check if title in bks. This needs optimization
-# space complexity is O(1) coz of use of array of dictionaries
+
 @app.route('/request', methods=['GET'])
 def getRequest():
     content_type = request.headers.get('Content-Type')
@@ -89,12 +85,11 @@ def getRequest():
                     # 'error': '',
                     'res': bks,
                     'status': '200',
-                    'msg': 'Success getting all books in library!👍😀'
+                    'msg': 'Success getting all books in library!👍😀',
+                    'no_of_books': len(bks)
                 })
 
-# time complexity is O(sqr(n)) coz of array to produce bks and
-# array to check if title in bks. This needs optimization
-# space complexity is O(1) coz of use of array of dictionaries
+
 @app.route('/request/<id>', methods=['GET'])
 def getRequestId(id):
     req_args = request.view_args
@@ -119,12 +114,44 @@ def getRequestId(id):
                     # 'error': '',
                     'res': bks,
                     'status': '200',
-                    'msg': 'Success getting book by ID!👍😀'
+                    'msg': 'Success getting book by ID!👍😀',
+                    'no_of_books': len(bks)
                 })
 
-# time complexity is O(sqr(n)) coz of array to produce bks and
-# array to check if title in bks. This needs optimization
-# space complexity is O(1) coz of use of array of dictionaries
+@app.route("/request", methods=['PUT'])
+def putRequest():
+    req_data = request.get_json()
+    availability = req_data['available']
+    title = req_data['title']
+    the_id = req_data['id']
+    bks = [b.serialize() for b in db.view()]
+    for b in bks:
+        if b['id'] == the_id:
+            bk = Book(
+                the_id, 
+                availability, 
+                title, 
+                datetime.datetime.now()
+            )
+            print('new book: ', bk.serialize())
+            db.update(bk)
+            new_bks = [b.serialize() for b in db.view()]
+            print('books in lib: ', new_bks)
+            return jsonify({
+                # 'error': '',
+                'res': bk.serialize(),
+                'status': '200',
+                'msg': f'Success updating the book titled {title}!👍😀'
+            })        
+    return jsonify({
+                # 'error': '',
+                'res': f'Error ⛔❌! Failed to update Book with title: {title}!',
+                'status': '404'
+            })
+    
+    
+
+
 @app.route('/request/<id>', methods=['DELETE'])
 def deleteRequest(id):
     req_args = request.view_args
@@ -135,8 +162,19 @@ def deleteRequest(id):
             if b['id'] == int(req_args['id']):
                 db.delete(b['id'])
                 updated_bks = [b.serialize() for b in db.view()]
-                # print('updated_bks: ', updated_bks)
-    return ""
+                print('updated_bks: ', updated_bks)
+                return jsonify({
+                    'res': updated_bks,
+                    'status': '200',
+                    'msg': 'Success deleting book by ID!👍😀',
+                    'no_of_books': len(updated_bks)
+                })
+    else:
+        return jsonify({
+            'error': f"Error ⛔❌! No Book ID sent!",
+            'res': '',
+            'status': '404'
+        })
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

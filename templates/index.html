@@ -657,7 +657,11 @@
 					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
 					fetch(`http://localhost:8000/request/${theId}`, {method: 'DELETE'})
-					.then(res => code.innerHTML = `Book deleted successfully!`)
+					.then(res => res.json())
+					.then(data => {
+						console.log('deletion data: ', data);
+						code.innerHTML = JSON.stringify(data, null, 2);
+					})
 					.catch(err => {
 						console.error('error: ', err)
 					});
@@ -665,7 +669,31 @@
 			}
 			else if(req_val === 'put') {
 				modalHeading.innerHTML = "PUT Request Response";
-				code.innerHTML = 'Under construction! Please come back later!';
+				if(theId === '') {
+					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
+				} else {
+					fetch(`http://localhost:8000/request/${theId}`, {method: 'GET'})
+					.then(res => res.json())
+					.then(data => {
+						console.log('data: ', data)
+						put_data = {...data.res, available: 'False'}
+						console.log('put_data: ', put_data);
+						fetch('http://localhost:8000/request', {
+							method: 'PUT',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(put_data),
+						})
+						.then(res => res.json())
+						.then(put_res_data => {
+							console.log('put_res_data: ', put_res_data)
+							code.innerHTML = JSON.stringify(put_res_data, null, 2);
+						})
+					}).catch(err => {
+						console.error('error: ', err)
+					});
+				}
 			}
 			launchModal();
 		}
