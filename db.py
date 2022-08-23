@@ -7,11 +7,11 @@ def getNewId():
 
 
 books = [
-    {
-        'available': True,
-        'title': 'Don Quixote',
-        'timestamp': datetime.datetime.now()
-    },
+    # {
+    #     'available': True,
+    #     'title': 'Don Quixote',
+    #     'timestamp': datetime.datetime.now()
+    # },
     {
         'available': True,
         'title': 'A Tale of Two Cities',

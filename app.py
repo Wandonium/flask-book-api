@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify
-import os, re
+import os, re, datetime
 import db
+from models import Book
+
 
 app = Flask(__name__)
 
@@ -43,15 +45,22 @@ def postRequest():
         if b['title'] == title:
             return jsonify({
                 # 'error': '',
-                'res': b,
-                'status': '200'
+                'res': f'Error ⛔❌! Book with title {title} is already in library!',
+                'status': '404'
             })
-    # print('bks: ', bks)
+
+    bk = Book(db.getNewId(), True, title, datetime.datetime.now())
+    print('new book: ', bk.serialize())
+    db.insert(bk)
+    new_bks = [b.serialize() for b in db.view()]
+    print('books in lib: ', new_bks)
+    
     return jsonify({
-        # 'error': '',
-        'res': f'Sorry! Book with title {title} was not found!',
-        'status': '404'
-    })
+                # 'error': '',
+                'res': bk.serialize(),
+                'status': '200',
+                'msg': 'Success creating a new book!👍😀'
+            })
 
 # time complexity is O(sqr(n)) coz of array to produce bks and
 # array to check if title in bks. This needs optimization
@@ -67,10 +76,11 @@ def getRequest():
                 return jsonify({
                     # 'error': '',
                     'res': b,
-                    'status': '200'
+                    'status': '200',
+                    'msg': 'Success getting all books in library!👍😀'
                 })
         return jsonify({
-            'error': f"Sorry! Book with id '{json['id']}' not found!",
+            'error': f"Error ⛔❌! Book with id '{json['id']}' not found!",
             'res': '',
             'status': '404'
         })
@@ -78,7 +88,8 @@ def getRequest():
         return jsonify({
                     # 'error': '',
                     'res': bks,
-                    'status': '200'
+                    'status': '200',
+                    'msg': 'Success getting all books in library!👍😀'
                 })
 
 # time complexity is O(sqr(n)) coz of array to produce bks and
@@ -95,10 +106,11 @@ def getRequestId(id):
                 return jsonify({
                     # 'error': '',
                     'res': b,
-                    'status': '200'
+                    'status': '200',
+                    'msg': 'Success getting book by ID!👍😀'
                 })
         return jsonify({
-            'error': f"Sorry! Book with id '{req_args['id']}' was not found!",
+            'error': f"Error ⛔❌! Book with id '{req_args['id']}' was not found!",
             'res': '',
             'status': '404'
         })
@@ -106,7 +118,8 @@ def getRequestId(id):
         return jsonify({
                     # 'error': '',
                     'res': bks,
-                    'status': '200'
+                    'status': '200',
+                    'msg': 'Success getting book by ID!👍😀'
                 })
 
 # time complexity is O(sqr(n)) coz of array to produce bks and

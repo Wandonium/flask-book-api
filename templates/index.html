@@ -4,10 +4,74 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ellie Template</title>
+    <title>Wando's Book Library</title>
     <link href="https://fonts.googleapis.com/css?family=Heebo:400,400i,500,700|Titillium+Web:600" rel="stylesheet">
     <link rel="stylesheet" href={{url_for('static', filename="css/style.css")}}>
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+	<style>		
+		/* The Modal (background) */
+		.modal {
+		  display: none; /* Hidden by default */
+		  position: fixed; /* Stay in place */
+		  z-index: 1; /* Sit on top */
+		  padding-top: 20vh; /* Location of the box */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* Full width */
+		  height: 100%; /* Full height */
+		  overflow: auto; /* Enable scroll if needed */
+		  background-color: rgb(0,0,0); /* Fallback color */
+		  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+		
+		/* Modal Content */
+		.modal-content {
+		  background-color: #fefefe;
+		  background: #fff;
+		  background-image: linear-gradient(48deg, #fff 0%, #e5efe9 100%);
+		  border-top-right-radius: 16px;
+		  border-bottom-left-radius: 16px;
+		  margin: auto;
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 40%;
+		  height: 75%;
+		}
+
+		.heading {
+		  font-size: 1.5em;
+		  margin: 12px 0px;
+		  line-height: 1.2;
+		  color: #121943;
+		}
+
+		.modal-header {
+		  align-items: baseline;
+		  display: flex;
+		  justify-content: space-between;
+		}
+
+		pre {
+			max-height: 45vh;
+			color: #fff;
+		}
+		
+		/* The Close Button */
+		.close {
+		  color: #aaaaaa;
+		  float: right;
+		  font-size: 2rem;
+		  line-height: 1.2;
+		  font-weight: bold;
+		}
+		
+		.close:hover,
+		.close:focus {
+		  color: #000;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+	</style>
 </head>
 <body class="is-boxed">
     <div class="body-wrap boxed-container">
@@ -54,7 +118,20 @@
                     <div class="hero-inner">
 						<div class="hero-copy">
 	                        <h1 class="hero-title mt-0 is-revealing">Welcome to Wando's Book Library</h1>
-	                        <p class="hero-paragraph is-revealing">To make use of the library post a  GET, POST, PUT or DELETE request to http://localhost:5000/request. Or use the below buttons to post the default requests. </p>
+	                        <p class="hero-paragraph is-revealing">To make use of the library post a  GET, POST, PUT or DELETE request to http://localhost:8000/request. Or use the below buttons to post the default requests. </p>
+
+							<!-- The Modal -->
+							<div id="myModal" class="modal">
+								<!-- Modal content -->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h2 class="heading" id="modal-heading">Modal Header</h2>
+										<span class="close">&times;</span>
+									</div>
+									<pre id="res-code">Server response goes here...</pre>
+								</div>
+							</div>
+
 							<div class="control control-expanded">
 								<input class="input" type="id" name="id" id="input" placeholder="Enter ID for below commands that require it&hellip;">
 							</div>
@@ -67,7 +144,8 @@
 							<br />
 							<div class="hero-form field field-grouped is-revealing">
 	                            <div class="control">
-	                                <a class="button button-primary button-block" href="http://localhost:8000/request">GET Request without ID</a>
+	                                <!-- <a class="button button-primary button-block" href="http://localhost:8000/request">GET Request without ID</a> -->
+	                                <a class="button button-primary button-block" href="#" onclick="do_req('get-all')">GET Request without ID</a>
 	                            </div>
 	                        </div>
 							<br />
@@ -487,8 +565,36 @@
 
     <script src={{url_for('static', filename="js/main.min.js")}}></script>
 	<script>
+		function launchModal() {
+			// Get the modal
+			var modal = document.getElementById("myModal");
+	
+			// Get the button that opens the modal
+			var btn = document.getElementById("myBtn");
+	
+			// Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close")[0];
+	
+			// When the user clicks the button, open the modal 
+			modal.style.display = "block";
+	
+			// When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+	
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			}
+		}
+
 		function do_req(req_val) {
 			console.log('req_val: ', req_val)
+			var modalHeading = document.getElementById("modal-heading");
+			var code = document.getElementById("res-code");
 			data = {
 				email: 'name@email.com',
 				title: 'Don Quixote'
@@ -498,6 +604,7 @@
 			console.log('theId: ', theId)
 
 			if(req_val === 'post') {
+				modalHeading.innerHTML = "POST Request Response";
 				fetch('http://localhost:8000/request', {
 					method: 'POST',
   					headers: {
@@ -508,39 +615,59 @@
 				.then(res => res.json())
 				.then(data => {
 					console.log('data: ', data)
-					document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+					// document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+					code.innerHTML = JSON.stringify(data, null, 2);
+				}).catch(err => {
+					console.error('error: ', err)
+				});
+			}
+			else if(req_val === 'get-all') {
+				modalHeading.innerHTML = "GET ALL Request Response";
+			
+				fetch(`http://localhost:8000/request`, {method: 'GET'})
+				.then(res => res.json())
+				.then(data => {
+					console.log('data: ', data)
+					// document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+					code.innerHTML = JSON.stringify(data, null, 2);
 				}).catch(err => {
 					console.error('error: ', err)
 				});
 			}
 			else if(req_val === 'get') {
+				modalHeading.innerHTML = "GET Request Response";
 				if(theId === '') {
-					document.body.innerHTML = 'Fatal error! Please enter an ID for this command';
+					// document.body.innerHTML = 'Fatal error! Please enter an ID for this command';
+					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
 					fetch(`http://localhost:8000/request/${theId}`, {method: 'GET'})
 					.then(res => res.json())
 					.then(data => {
 						console.log('data: ', data)
-						document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+						// document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+						code.innerHTML = JSON.stringify(data, null, 2);
 					}).catch(err => {
 						console.error('error: ', err)
 					});
 				}
 			}
 			else if(req_val === 'delete') {
+				modalHeading.innerHTML = "DELETE Request Response";
 				if(theId === '') {
-					document.body.innerHTML = 'Fatal error! Please enter an ID for this command';
+					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
 					fetch(`http://localhost:8000/request/${theId}`, {method: 'DELETE'})
-					.then(res => document.body.innerHTML = `Book deleted successfully!`)
+					.then(res => code.innerHTML = `Book deleted successfully!`)
 					.catch(err => {
 						console.error('error: ', err)
 					});
 				}
 			}
 			else if(req_val === 'put') {
-				document.body.innerHTML = 'Under construction! Please come back later!';
+				modalHeading.innerHTML = "PUT Request Response";
+				code.innerHTML = 'Under construction! Please come back later!';
 			}
+			launchModal();
 		}
 	</script>
 </body>
