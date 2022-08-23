@@ -36,6 +36,14 @@
 		  border: 1px solid #888;
 		  width: 40%;
 		  height: 75%;
+		  animation-name: example;
+  		  animation-duration: 0.5s;
+		  animation-timing-function: ease-out;
+		}
+
+		@keyframes example {
+		  from {transform: translate(0, -500%);}
+		  to {transform: translate(0, 0);}
 		}
 
 		.heading {
