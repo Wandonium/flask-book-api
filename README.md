@@ -1,5 +1,5 @@
 
-# GiveDirectly Take Home Interview Task
+# Flask Book API Server
 
 ![Landing Page Screenshot](./give-directly.png?raw=true "Landing Page")
 
@@ -30,13 +30,13 @@ To run the project locally, please follow the steps given below.
 - Clone this Repository
 
   ```bash
-      git clone https://github.com/Wandonium/give-directly.git
+      git clone https://github.com/Wandonium/flask-book-api
   ```
 
 - Go to Project directory
 
   ```bash
-  cd give-directly
+  cd flask-book-api
   ```
 
 - Create python virtual environment for project
@@ -65,13 +65,17 @@ To run the project locally, please follow the steps given below.
 
 ![Landing Page Screenshot](./give-directly.png?raw=true "Landing Page")
 
+## Links
 
+- Solution URL: [Solution on Github](https://github.com/Wandonium/flask-book-api)
+- Live Site URL: [Live Site on Microsoft Azure](https://wandonium-mortgage.netlify.app/)
+- Project Blogpost: [Blogpost on Medium](https://medium.com/)
+  
 ## About Author
 
-Was not done after the 3 hour mark. Would have done the following with some extra time:
+- Website - [Hillary Wando](http://hillarywando.com/)
+- Twitter - [@hillarywando](https://www.twitter.com/hillarywando)
 
-- Add test cases for each endpoint using either [Selenium](https://www.selenium.dev/) or [PyTest](https://docs.pytest.org/en/7.1.x/)
-- Optimized time and space complexity for each endpoint
 
 <!-- It is mandatory to add this.-->
 
