@@ -1,5 +1,5 @@
-build-dev: 
-	docker build -t flask-book-api .
+build-flask: 
+	docker build -t wandonium/flask-book-api .
 
-run-dev: 
-	docker run --name flask-book-api -d -p 80:80 --rm flask-book-api:latest
+run-flask: 
+	docker run --name flask-book-api -d -p 8000:5000 --rm wandonium/flask-book-api:latest

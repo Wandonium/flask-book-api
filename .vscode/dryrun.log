@@ -1,3 +1,4 @@
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/wando/Documents/portfolio-projects/flask-book-api'
 make: Leaving directory '/home/wando/Documents/portfolio-projects/flask-book-api'
  
