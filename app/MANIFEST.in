@@ -1,0 +1,4 @@
+include flask-book-api/schema.sql
+graft flask-book-api/static
+graft flask-book-api/templates
+global-exclude *.pyc
