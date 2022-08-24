@@ -613,7 +613,7 @@
 
 			if(req_val === 'post') {
 				modalHeading.innerHTML = "POST Request Response";
-				fetch('http://localhost:8000/request', {
+				fetch('/request', {
 					method: 'POST',
   					headers: {
     					'Content-Type': 'application/json',
@@ -632,7 +632,7 @@
 			else if(req_val === 'get-all') {
 				modalHeading.innerHTML = "GET ALL Request Response";
 			
-				fetch(`http://localhost:8000/request`, {method: 'GET'})
+				fetch(`/request`, {method: 'GET'})
 				.then(res => res.json())
 				.then(data => {
 					console.log('data: ', data)
@@ -648,7 +648,7 @@
 					// document.body.innerHTML = 'Fatal error! Please enter an ID for this command';
 					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
-					fetch(`http://localhost:8000/request/${theId}`, {method: 'GET'})
+					fetch(`/request/${theId}`, {method: 'GET'})
 					.then(res => res.json())
 					.then(data => {
 						console.log('data: ', data)
@@ -664,7 +664,7 @@
 				if(theId === '') {
 					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
-					fetch(`http://localhost:8000/request/${theId}`, {method: 'DELETE'})
+					fetch(`/request/${theId}`, {method: 'DELETE'})
 					.then(res => res.json())
 					.then(data => {
 						console.log('deletion data: ', data);
@@ -680,13 +680,13 @@
 				if(theId === '') {
 					code.innerHTML = 'Fatal error ⛔❌! Please enter an ID for this command';
 				} else {
-					fetch(`http://localhost:8000/request/${theId}`, {method: 'GET'})
+					fetch(`/request/${theId}`, {method: 'GET'})
 					.then(res => res.json())
 					.then(data => {
 						console.log('data: ', data)
 						put_data = {...data.res, available: 'False'}
 						console.log('put_data: ', put_data);
-						fetch('http://localhost:8000/request', {
+						fetch('/request', {
 							method: 'PUT',
 							headers: {
 								'Content-Type': 'application/json',
