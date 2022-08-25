@@ -3,16 +3,8 @@ services:
   app:
     image: wandonium/flask-book-api
     container_name: flask-book-api
-    networks:
-      - proxy_net
-  proxy:
-    image: wandonium/flask-proxy
-    container_name: flask-proxy
-    restart: always
     environment:
       - VIRTUAL_HOST=flask-book-api.m.hillarywando.com,www.flask-book-api.m.hillarywando.com
-    depends_on:
-      - app
     networks:
       - proxy_net
 networks:
