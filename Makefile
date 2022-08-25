@@ -1,8 +1,9 @@
-build-prod:
-	cd app && $(MAKE) build-flask
-	cd nginx && $(MAKE) build-nginx
-	docker push wandonium/flask-book-api:latest
-	docker push wandonium/flask-proxy:latest
+build: 
+	docker build -t wandonium/flask-book-api .
 
-run-prod:
-	docker-compose -f docker-compose.prod.yml up -d
+run: 
+	docker run --name flask-book-api -d -p 8000:5000 --rm wandonium/flask-book-api:latest
+
+build-prod:
+	docker build -t wandonium/flask-book-api .
+	docker push wandonium/flask-book-api:latest
