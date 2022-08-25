@@ -5,11 +5,20 @@ services:
     container_name: flask-book-api
     ports: 
       - 8000:5000
+    networks:
+      - proxy_net
   proxy:
     image: wandonium/flask-proxy
     container_name: flask-proxy
     restart: always
     ports:
       - 80:80
+    environment:
+      - VIRTUAL_HOST=flask-book-api.m.hillarywando.com,www.flask-book-api.m.hillarywando.com
     depends_on:
       - app
+    networks:
+      - proxy_net
+networks:
+  proxy_net:
+    driver: bridge
