@@ -15,7 +15,7 @@ This is a Python3-Flask server for a book library where we are adding a new ​/
 ## Library Used
 
 - [Flask](https://flask.palletsprojects.com/en/2.1.x/)
-- Python v3.8.10.
+- [Python v3.8.10](https://www.python.org/downloads/release/python-3810/)
 
 Command to install libraries:
 
@@ -68,8 +68,8 @@ To run the project locally, please follow the steps given below.
 ## Links
 
 - Solution URL: [Solution on Github](https://github.com/Wandonium/flask-book-api)
-- Live Site URL: [Live Site on Microsoft Azure](https://wandonium-mortgage.netlify.app/)
-- Project Blogpost: [Blogpost on Medium](https://medium.com/)
+- Live Site URL: [Live Site on Microsoft Azure](https://www.flask-book-api.m.hillarywando.com/)
+- Project Blogpost: [Blogpost on Medium](https://medium.com/@hillarywando/how-to-create-a-basic-crud-api-using-python-flask-cd68ef5fd7e3)
   
 ## About Author
 
